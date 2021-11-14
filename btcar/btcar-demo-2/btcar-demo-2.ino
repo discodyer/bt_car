@@ -41,57 +41,7 @@ Serial.begin(9600);
 }
 
 void loop() {
-  // Tell both motors to go forward (may depend by your wiring)
-  motors.forward();
 
-  // Alternative method:
-  // motors.run(L298N::FORWARD);
-
-  //print the motor status in the serial monitor
-  printSomeInfo();
-
-  delay(3000);
-
-  // Stop
-  motors.stop();
-
-  // Alternative method:
-  // motors.run(L298N::STOP);
-
-  printSomeInfo();
-
-  delay(3000);
-
-  // Change individual speeds
-  motors.setSpeedA(255);
-  motors.setSpeedB(90);
-
-  // Tell motor A to go back (may depend by your wiring)
-  motors.backwardA();
-
-  // Alternative method:
-  // motors.runA(L298N::BACKWARD);
-
-  // Tell motor B to go forward (may depend by your wiring)
-  motors.backwardB();
-
-  // Alternative method:
-  // motors.runB(L298N::FORWARD);
-
-  printSomeInfo();
-
-  delay(3000);
-
-  // Stop
-  motors.stop();
-
-  printSomeInfo();
-
-  // Change individual speeds
-  motors.setSpeedA(90);
-  motors.setSpeedB(255);
-
-  delay(3000);
 }
 
 /*
