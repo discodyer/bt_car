@@ -46,7 +46,7 @@ unsigned short HIGH_SPEED = 255;
 
 
 void printSomeInfo();//print motor info to serial
-void testAllMotors();//test all motors 
+//void debugTestAll();//test all motors 
 
 
 
@@ -66,14 +66,14 @@ void setup() {
 
 
 void loop() {
-
-  // Empty. Things are done in Tasks.
+  //  debugTestAll();
+  //  Empty. Things are done in Tasks.
 
 }
 
-/*
-Print some informations in Serial Monitor
-*/
+
+//Print some informations in Serial Monitor
+
 void printSomeInfo()
 {
   Serial.print("Motor A is moving = ");
@@ -87,12 +87,12 @@ void printSomeInfo()
 }
 
 
-/*
-test all motors
-*/
-void testAllMotors()
+
+
+
+/* void debugTestAll()        //test all motors
 {
-  motors.setSpeed(255);
+  motors.setSpeed(80);
   motors.forward();
   printSomeInfo();
   delay(2000);
@@ -131,3 +131,4 @@ void testAllMotors()
   delay(1000);
   motors.stop();
 }
+ */
