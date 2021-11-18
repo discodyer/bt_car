@@ -23,25 +23,25 @@
 
 ```mermaid
 graph TB
-    subgraph M1
-        M1_1-->LIN3
-        M1_2-->LIN4
-        M1_E-->LENB
-    end
-    subgraph M2
-        M2_1-->RIN2
-        M2_2-->RIN1
-        M2_E-->RENA
+    subgraph M4
+        M4_1-->RIN4
+        M4_2-->RIN3
+        M4_E-->RENB
     end
     subgraph M3
         M3_1-->LIN2
         M3_2-->LIN1
         M3_E-->LENA
     end
-    subgraph M4
-        M4_1-->RIN4
-        M4_2-->RIN3
-        M4_E-->RENB
+    subgraph M2
+        M2_1-->RIN2
+        M2_2-->RIN1
+        M2_E-->RENA
+    end
+    subgraph M1
+        M1_1-->LIN3
+        M1_2-->LIN4
+        M1_E-->LENB
     end
 ```
 
