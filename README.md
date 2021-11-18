@@ -30,4 +30,4 @@
 
 ### UserGuide.md
 
-关于如何使用蓝牙来控制小车，请阅读：[UserGuide.md](https://gitlab.dustella.net/discodyer/bt_car/-/blob/master/UserGuide.md)
+关于如何使用蓝牙来控制小车，请阅读：[串口指令文档](https://gitlab.dustella.net/discodyer/bt_car/-/blob/master/UserGuide.md)
