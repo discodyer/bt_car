@@ -19,6 +19,32 @@
 
 ### 硬件部分
 
+**接线图**
+
+```mermaid
+graph LR
+    subgraph M1
+        1-->LIN3
+        2-->LIN4
+        E-->LENB
+    end
+    subgraph M2
+        1-->RIN2
+        2-->RIN1
+        E-->RENA
+    end
+    subgraph M3
+        1-->LIN2
+        2-->LIN1
+        E-->LENA
+    end
+    subgraph M4
+        1-->RIN4
+        2-->RIN3
+        E-->RENB
+    end
+```
+
 **单片机**采用的是Arduino Nano ，之所以用这款单片机有两个原因，我本人不太会耍STM32，并且之前那个STM32被我烧了qwq  
 单片机的**底板**是我自己瞎画的，主要是方便插线和扩展，因为5V和接地总是不够用，而且我加了个typec的口子，这样就会比较舒服。  
 **驱动电机的模块**是已经买好的两个L298N，单独一块板子可以控制两个电机，两块板子就可以控制4个电机，岂不美哉？  
