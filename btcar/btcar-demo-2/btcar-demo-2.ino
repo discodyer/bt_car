@@ -46,7 +46,7 @@ unsigned short HIGH_SPEED = 255;
 
 
 void printSomeInfo();//print motor info to serial
-//void debugTestAll();//test all motors 
+void debugTestAll();//test all motors 
 
 
 
@@ -66,7 +66,7 @@ void setup() {
 
 
 void loop() {
-  //  debugTestAll();
+    debugTestAll();
   //  Empty. Things are done in Tasks.
 
 }
@@ -90,45 +90,59 @@ void printSomeInfo()
 
 
 
-/* void debugTestAll()        //test all motors
+void debugTestAll()        //test all motors
 {
-  motors.setSpeed(80);
-  motors.forward();
-  printSomeInfo();
-  delay(2000);
-  motors.stop();
+  // motors.setSpeed(80);
+  // motors.forward();
+  // printSomeInfo();
+  // delay(2000);
+  // motors.stop();
   
-  motors.backward();
-  printSomeInfo();
-  delay(2000);
-  motors.stop();
+  // motors.backward();
+  // printSomeInfo();
+  // delay(2000);
+  // motors.stop();
 
-  motors.forwardA();
-  delay(1000);
-  motors.stop();
+  // motors.forwardA();
+  // delay(1000);
+  // motors.stop();
+  // motors.backwardA();
+  // delay(1000);
+  // motors.stop();
+
+  // motors.forwardB();
+  // delay(1000);
+  // motors.stop();
+  // motors.backwardB();
+  // delay(1000);
+  // motors.stop();
+
+  // motors.forwardC();
+  // delay(1000);
+  // motors.stop();
+  // motors.backwardC();
+  // delay(1000);
+  // motors.stop();
+
+  // motors.forwardD();
+  // delay(1000);
+  // motors.stop();
+  // motors.backwardD();
+  // delay(1000);
+  // motors.stop();
+
+  //半径约为1米逆时针前进
+  motors.setSpeedA(40);
+  motors.setSpeedC(0);
+  motors.setSpeedB(150);
+  motors.setSpeedD(160);
   motors.backwardA();
-  delay(1000);
-  motors.stop();
-
   motors.forwardB();
-  delay(1000);
-  motors.stop();
-  motors.backwardB();
-  delay(1000);
-  motors.stop();
-
-  motors.forwardC();
-  delay(1000);
-  motors.stop();
-  motors.backwardC();
-  delay(1000);
-  motors.stop();
-
   motors.forwardD();
+
+
   delay(1000);
   motors.stop();
-  motors.backwardD();
-  delay(1000);
-  motors.stop();
+  delay(10000);
+
 }
- */
