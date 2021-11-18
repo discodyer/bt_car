@@ -70,7 +70,7 @@ $命令,参数,参数,参数*
 | :-----| :----- | :----- | :----- |
 | `F` | <abbr title="参数是大写的ABCD，@代表全部，可以AC，BD这样指定，但一定要按照字母的顺序">`轮子`</abbr> , <abbr title="范围0~255，默认80">`SPEED`</abbr> , <abbr title="单位是ms，1000=1s,默认在中断前不会停止">`TIME`</abbr> | <abbr title="默认全部轮子，默认速度80，默认不停止">`$F,@,@,@*`</abbr> / <abbr title="和[$F,@,@,@*]等价">`$F*`</abbr> | 前进（可指定轮子 |
 | `B` | <abbr title="ABCD，@代表全部，可以AC，BD这样指定">`轮子`</abbr> , <abbr title="范围0~255，默认80">`SPEED`</abbr> , <abbr title="单位是ms，1000=1s,默认在中断前不会停止">`TIME`</abbr> | <abbr title="默认全部轮子，默认速度80，默认不停止">`$B,@,@,@*`</abbr> / <abbr title="和[$B,@,@,@*]等价">`$B*`</abbr> | 后退（可指定轮子 |
-| `STOP` | 无参数 | <abbr title="强行终止小车所有运动">`$STOP*`</abbr> | 强制中断 |
+| `KILL` | 无参数 | <abbr title="强行终止小车所有运动">`$KILL*`</abbr> | 强制中断 |
 |  |  |  |  |
 |  |  |  |  |
 |  |  |  |  |
