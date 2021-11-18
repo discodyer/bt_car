@@ -22,7 +22,7 @@
 **接线图**
 
 ```mermaid
-graph LR
+graph TB
     subgraph M1
         M1_1-->LIN3
         M1_2-->LIN4
