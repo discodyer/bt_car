@@ -24,24 +24,24 @@
 ```mermaid
 graph LR
     subgraph M1
-        1-->LIN3
-        2-->LIN4
-        E-->LENB
+        M1_1-->LIN3
+        M1_2-->LIN4
+        M1_E-->LENB
     end
     subgraph M2
-        1-->RIN2
-        2-->RIN1
-        E-->RENA
+        M2_1-->RIN2
+        M2_2-->RIN1
+        M2_E-->RENA
     end
     subgraph M3
-        1-->LIN2
-        2-->LIN1
-        E-->LENA
+        M3_1-->LIN2
+        M3_2-->LIN1
+        M3_E-->LENA
     end
     subgraph M4
-        1-->RIN4
-        2-->RIN3
-        E-->RENB
+        M4_1-->RIN4
+        M4_2-->RIN3
+        M4_E-->RENB
     end
 ```
 
