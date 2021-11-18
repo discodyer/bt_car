@@ -27,3 +27,7 @@
 这个库文件我是根据一个现成的改的，原本的只能支持到2路电机，我给改成4路了，这样就可以变成四驱小车了  
 这个单片机要做的事情很简单，收到串口发来的指令，只要照着做就行了。  
 需要避免单线程堵塞，，，  
+
+### UserGuide.md
+
+关于如何使用蓝牙来控制小车，请阅读：[UserGuide.md](https://gitlab.dustella.net/discodyer/bt_car/-/blob/master/UserGuide.md)
