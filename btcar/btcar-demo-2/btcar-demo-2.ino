@@ -61,7 +61,7 @@ void setup() {
   // Set initial speed for ALL motors
   
   }
-  motors.setSpeed(80);
+  motors.setSpeed(200);
 }
 
 
@@ -132,17 +132,13 @@ void debugTestAll()        //test all motors
   // motors.stop();
 
   //半径约为1米逆时针前进
-  motors.setSpeedA(40);
-  motors.setSpeedC(0);
-  motors.setSpeedB(150);
-  motors.setSpeedD(160);
-  motors.backwardA();
-  motors.forwardB();
-  motors.forwardD();
 
-
-  delay(1000);
+  motors.forwardA();
+  motors.forwardC();
+  delay(400);
   motors.stop();
-  delay(10000);
-
+  motors.backwardB();
+  motors.backwardD();
+  delay(200);
+  motors.stop();
 }
