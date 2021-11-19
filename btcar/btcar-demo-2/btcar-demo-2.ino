@@ -1,4 +1,4 @@
-#include <Arduino_FreeRTOS.h>      //using freertos to realize multithreading 
+//#include <Arduino_FreeRTOS.h>      //using freertos to realize multithreading 
 
 #include "L298NX4.h"
 #include "L298N.h"
@@ -45,9 +45,9 @@ unsigned short LOW_SPEED = 55;
 unsigned short HIGH_SPEED = 255;
 
 
-void printSomeInfo();//print motor info to serial
-void debugTestAll();//test all motors 
-
+//void printSomeInfo();//print motor info to serial
+//void debugTestAll();//test all motors 
+//String get_serial_input();
 
 
 void setup() {
@@ -61,84 +61,139 @@ void setup() {
   // Set initial speed for ALL motors
   
   }
-  motors.setSpeed(200);
+  //motors.setSpeed(200);
 }
 
 
-void loop() {
-    debugTestAll();
-  //  Empty. Things are done in Tasks.
-
+void loop() 
+{
+   String inString = "";
+   while (Serial.available()>0)
+   {
+     char inChar = Serial.read();
+     inString += (char)inChar;
+     delay(10);
+   }
+   if (inString!="")
+   {
+     String cmd=inStringToCommand(inString);
+     Serial.println(cmd);
+   }
+//debugTestAll();
 }
 
 
 //Print some informations in Serial Monitor
 
-void printSomeInfo()
-{
-  Serial.print("Motor A is moving = ");
-  Serial.print(motors.isMovingA() ? "YES" : "NO");
-  Serial.print(" at speed = ");
-  Serial.println(motors.getSpeedA());
-  Serial.print("Motor B is moving = ");
-  Serial.print(motors.isMovingB() ? "YES" : "NO");
-  Serial.print(" at speed = ");
-  Serial.println(motors.getSpeedB());
-}
+//void printSomeInfo()
+//{
+//  Serial.print("Motor A is moving = ");
+//  Serial.print(motors.isMovingA() ? "YES" : "NO");
+//  Serial.print(" at speed = ");
+//  Serial.println(motors.getSpeedA());
+//  Serial.print("Motor B is moving = ");
+//  Serial.print(motors.isMovingB() ? "YES" : "NO");
+//  Serial.print(" at speed = ");
+//  Serial.println(motors.getSpeedB());
+//}
 
 
 
 
 
-void debugTestAll()        //test all motors
-{
-  // motors.setSpeed(80);
-  // motors.forward();
-  // printSomeInfo();
-  // delay(2000);
-  // motors.stop();
+ void debugTestAll()        //test all motors
+ {
+//   // motors.setSpeed(80);
+//   // motors.forward();
+//   // printSomeInfo();
+//   // delay(2000);
+//   // motors.stop();
   
-  // motors.backward();
-  // printSomeInfo();
-  // delay(2000);
-  // motors.stop();
+//   // motors.backward();
+//   // printSomeInfo();
+//   // delay(2000);
+//   // motors.stop();
 
-  // motors.forwardA();
-  // delay(1000);
-  // motors.stop();
-  // motors.backwardA();
-  // delay(1000);
-  // motors.stop();
+//   // motors.forwardA();
+//   // delay(1000);
+//   // motors.stop();
+//   // motors.backwardA();
+//   // delay(1000);
+//   // motors.stop();
 
-  // motors.forwardB();
-  // delay(1000);
-  // motors.stop();
-  // motors.backwardB();
-  // delay(1000);
-  // motors.stop();
+//   // motors.forwardB();
+//   // delay(1000);
+//   // motors.stop();
+//   // motors.backwardB();
+//   // delay(1000);
+//   // motors.stop();
 
-  // motors.forwardC();
-  // delay(1000);
-  // motors.stop();
-  // motors.backwardC();
-  // delay(1000);
-  // motors.stop();
+//   // motors.forwardC();
+//   // delay(1000);
+//   // motors.stop();
+//   // motors.backwardC();
+//   // delay(1000);
+//   // motors.stop();
+//
+// motors.forwardD();
+// delay(1000);
+// motors.stop();
+// motors.backwardD();
+// delay(1000);
+// motors.stop();
 
-  // motors.forwardD();
-  // delay(1000);
-  // motors.stop();
-  // motors.backwardD();
-  // delay(1000);
-  // motors.stop();
+////   //半径约为1米逆时针前进
+//   motors.setSpeedA(150);
+//   motors.setSpeedC(150);
+//   motors.setSpeedB(50);
+//   motors.setSpeedD(50);
+//   motors.forward();
+//   
+//   delay(2000);
+//   motors.stop();
+//   delay(2000);
+motors.setSpeed(130);
+motors.forwardA();
+motors.forwardC();
+delay(200);
+motors.stop();
+motors.backwardB();
+motors.backwardD();
+delay(200);
+motors.stop();
 
-  //半径约为1米逆时针前进
 
-  motors.forwardA();
-  motors.forwardC();
-  delay(400);
-  motors.stop();
-  motors.backwardB();
-  motors.backwardD();
-  delay(200);
-  motors.stop();
+ }
+
+
+// void explain(string input_msg)
+// {
+  
+// }
+
+
+//
+//char* stringToChar(String instr)
+//{
+//     char* str = NULL;
+//     const char* constc = NULL;
+//     constc=instr.c_str();
+//     str= const_cast<char*>(constc);
+//     return str;
+//}
+
+String inStringToCommand(String str)
+{
+    String cmd = "";
+    if (str[0] == '$'  && str[str.length()-2] == '*')
+    {
+       cmd = str;
+       Serial.println("OK");
+       return cmd;
+    }
+    else 
+    {
+       Serial.println("E0");
+       return cmd;
+    }
 }
