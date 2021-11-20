@@ -57,6 +57,7 @@ void setup() {
   // Set initial speed for ALL motors
   
   }
+  Serial.println("initOK");
   //motors.setSpeed(80);
 }
 
@@ -166,14 +167,37 @@ void loop()
 //delay(200);
 //motors.stop();
 
-//!F*
-motors.setSpeedA(80);
-motors.setSpeedB(80);
-motors.setSpeedC(80);
-motors.setSpeedD(80);
-motors.forward();
-delay(200);
-motors.stop();
+
+
+////向右转弯，半径1米
+//motors.stop();
+//motors.setSpeedA(130);
+//motors.setSpeedB(130);
+//motors.setSpeedC(130);
+//motors.setSpeedD(50);
+//motors.forwardA();
+//motors.backwardB();
+//motors.forwardC();
+//motors.forwardD();
+
+
+//原地右转
+//motors.setSpeed(130);
+//motors.forwardA();
+//motors.forwardC();
+//motors.backwardB();
+//motors.backwardD();
+//delay(500);
+//motors.stop();
+
+// //!F*
+// motors.setSpeedA(80);
+// motors.setSpeedB(80);
+// motors.setSpeedC(80);
+// motors.setSpeedD(80);
+// motors.forward();
+// delay(200);
+// motors.stop();
 
 }
 
@@ -260,9 +284,9 @@ void preruncmd(String input)
          {
             if (input[i+2]=='*')          //!F*
             {
-               motors.setSpeedA(80);
+               motors.setSpeedA(110);
                motors.setSpeedB(80);
-               motors.setSpeedC(80);
+               motors.setSpeedC(110);
                motors.setSpeedD(80);
                motors.forward();
             }
@@ -280,9 +304,9 @@ void preruncmd(String input)
          {
             if (input[i+2]=='*')          //!B*
             {
-               motors.setSpeedA(80);
+               motors.setSpeedA(130);
                motors.setSpeedB(80);
-               motors.setSpeedC(80);
+               motors.setSpeedC(130);
                motors.setSpeedD(80);
                motors.backward();
             }
@@ -297,7 +321,7 @@ void preruncmd(String input)
          }
          case('K'):
          {
-            if(input=="!KILL*")
+            if(input=="!KILL*")          //!KILL*
             {
                motors.stop();
             }
@@ -305,10 +329,175 @@ void preruncmd(String input)
             Serial.println("E4");
             break;
          }
-         //case('T'):
-         //case('L'):
-         //case('R'):
-         //case('S'):
+         case('T'):                             //!T
+         {
+            if (input[i+2]=='L')
+            {
+               if (input[i+3]=='*')
+               {
+                  motors.setSpeed(130);
+                  motors.backwardA();
+                  motors.backwardC();
+                  motors.forwardB();
+                  motors.forwardD();
+                  delay(500);
+                  motors.stop();
+                  break;
+               }
+               else if (input[i+2]==',')
+               {
+                  runcmd("T",input);
+                  break;
+               }
+               else
+               Serial.println("E6");
+               break;
+            }
+            else if (input[i+2]=='R')
+            {
+               if (input[i+3]=='*')
+               {
+                  motors.setSpeed(130);
+                  motors.forwardA();
+                  motors.forwardC();
+                  motors.backwardB();
+                  motors.backwardD();
+                  delay(500);
+                  motors.stop();
+                  break;
+               }
+               else if (input[i+3]==',')
+               {
+                  runcmd("T",input);
+                  break;
+               }
+               else
+               Serial.println("E6");
+               break;
+            }
+            else
+            Serial.println("E6");
+            break;
+         }
+         case('L'):
+         {
+            if (input=="!L*")                   //!L*
+            {
+                                                //向左转弯，半径1米
+               motors.stop();
+               motors.setSpeedA(130);
+               motors.setSpeedB(130);
+               motors.setSpeedC(50);
+               motors.setSpeedD(130);
+               motors.backwardA();
+               motors.forwardB();
+               motors.forwardC();
+               motors.forwardD();
+            }
+            else if (input[i+2]==',')
+            {
+               int m=1;
+               switch(input[i+3])
+               {
+                  case('@'):
+                  {
+                     m=1;break;
+                  }
+                  case('1'):
+                  {
+                     m=1;break;
+                  }
+                  case('2'):
+                  {
+                     m=3;break;
+                  }
+                  case('3'):
+                  {
+                     m=3;break;
+                  }
+                  default:
+                  {
+                     Serial.println("E7");
+                     break;
+                  }
+               }
+               motors.stop();
+               motors.setSpeedA(120+(m*10));
+               motors.setSpeedB(120+(m*10));
+               motors.setSpeedC(40+(m*10));
+               motors.setSpeedD(120+(m*10));
+               motors.backwardA();
+               motors.forwardB();
+               motors.forwardC();
+               motors.forwardD();
+            }
+         }
+         case('R'):
+         {
+            if (input=="!R*")                   //!R*
+            {
+                                                //向右转弯，半径1米
+               motors.stop();
+               motors.setSpeedA(130);
+               motors.setSpeedB(130);
+               motors.setSpeedC(130);
+               motors.setSpeedD(50);
+               motors.forwardA();
+               motors.backwardB();
+               motors.forwardC();
+               motors.forwardD();
+            }
+            else if (input[i+2]==',')
+            {
+               int m=1;
+               switch(input[i+3])
+               {
+                  case('@'):
+                  {
+                     m=1;break;
+                  }
+                  case('1'):
+                  {
+                     m=1;break;
+                  }
+                  case('2'):
+                  {
+                     m=3;break;
+                  }
+                  case('3'):
+                  {
+                     m=3;break;
+                  }
+                  default:
+                  {
+                     Serial.println("E7");
+                     break;
+                  }
+               }
+               motors.stop();
+               motors.setSpeedA(120+(m*10));
+               motors.setSpeedB(120+(m*10));
+               motors.setSpeedC(120+(m*10));
+               motors.setSpeedD(40+(m*10));
+               motors.forwardA();
+               motors.backwardB();
+               motors.forwardC();
+               motors.forwardD();
+            }
+         }
+         case('S'):
+         {
+            if(input=="!S*")
+            {
+               motors.setSpeedA(80);
+               motors.setSpeedB(80);
+               motors.setSpeedC(80);
+               motors.setSpeedD(80);
+            }
+            else 
+            Serial.println("E8");
+            break;
+         }
          default:
          {
             Serial.println("E5");
@@ -326,7 +515,6 @@ void preruncmd(String input)
 
 void runcmd(String cmd,String fullcmd)    //执行命令的终极版，如果preruncmd()搞不定就交给它把
 {
-   
    switch (cmd[0])
    {
    case('F'):
@@ -348,9 +536,9 @@ void runcmd(String cmd,String fullcmd)    //执行命令的终极版，如果pre
          }
       if (getnumstring(fullcmd,1)=="@")
             {
-               motors.setSpeedA(num2);
+               motors.setSpeedA(num2+30);
                motors.setSpeedB(num2);
-               motors.setSpeedC(num2);
+               motors.setSpeedC(num2+30);
                motors.setSpeedD(num2);
                motors.forward();
                if (num3!=0)
@@ -416,9 +604,9 @@ void runcmd(String cmd,String fullcmd)    //执行命令的终极版，如果pre
          }
       if (getnumstring(fullcmd,1)=="@")
             {
-               motors.setSpeedA(num2);
+               motors.setSpeedA(num2+50);
                motors.setSpeedB(num2);
-               motors.setSpeedC(num2);
+               motors.setSpeedC(num2+50);
                motors.setSpeedD(num2);
                motors.backward();
                if (num3!=0)
@@ -465,7 +653,54 @@ void runcmd(String cmd,String fullcmd)    //执行命令的终极版，如果pre
             }
       
    }
-   
+   case('T'):
+   {
+      int time=500;
+      String num1 = getnumstring(fullcmd,1);
+      if (fullcmd[2]=='L')
+         {
+            if (num1=="@")
+            {
+               time=500;
+            }
+            else
+            {
+               time=stringtonum(num1);
+            }
+               motors.setSpeed(130);
+               motors.backwardA();
+               motors.backwardC();
+               motors.forwardB();
+               motors.forwardD();
+               delay(time);
+               motors.stop();
+         }
+      else if (fullcmd[2]=='R')
+         {
+            if (num1=="@")
+            {
+               time=500;
+            }
+            else
+            {
+               time=stringtonum(num1);
+            }
+               motors.setSpeed(130);
+               motors.forwardA();
+               motors.forwardC();
+               motors.backwardB();
+               motors.backwardD();
+               delay(time);
+               motors.stop();
+         }
+      else 
+      Serial.println("E6");
+      break;
    }
-
+   default:
+   {
+      Serial.println("E5");
+      break;
+   }
+   }
 }
