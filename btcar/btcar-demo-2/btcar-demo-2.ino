@@ -67,19 +67,19 @@ void setup() {
 
 void loop() 
 {
-   String inString = "";
-   while (Serial.available()>0)
-   {
-     char inChar = Serial.read();
-     inString += (char)inChar;
-     delay(10);
-   }
-   if (inString!="")
-   {
-     String cmd=inStringToCommand(inString);
-     Serial.println(cmd);
-   }
-//debugTestAll();
+//   String inString = "";
+//   while (Serial.available()>0)
+//   {
+//     char inChar = Serial.read();
+//     inString += (char)inChar;
+//     delay(10);
+//   }
+//   if (inString!="")
+//   {
+//     String cmd=inStringToCommand(inString);
+//     Serial.println(cmd);
+//   }
+debugTestAll();
 }
 
 
@@ -152,16 +152,22 @@ void loop()
 //   delay(2000);
 //   motors.stop();
 //   delay(2000);
-motors.setSpeed(130);
-motors.forwardA();
-motors.forwardC();
+//motors.setSpeed(130);
+//motors.forwardA();
+//motors.forwardC();
+//delay(200);
+//motors.stop();
+//motors.backwardB();
+//motors.backwardD();
+//delay(200);
+//motors.stop();
+motors.setSpeedA(150);
+motors.setSpeedB(80);
+motors.setSpeedC(150);
+motors.setSpeedD(80);
+motors.forward();
 delay(200);
 motors.stop();
-motors.backwardB();
-motors.backwardD();
-delay(200);
-motors.stop();
-
 
  }
 
