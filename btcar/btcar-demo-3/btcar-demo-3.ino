@@ -1,8 +1,11 @@
-//#include <Arduino_FreeRTOS.h>      //TODO：using freertos to realize multithreading 
-
 #include "L298NX4.h"
 #include "L298N.h"
 
+//这个版本是专门为麦克纳姆轮版本适配的
+//移动方式和原本的不同
+//接受的指令和原本的也不同，是另外一套
+//而且指令的接受周期也和原本的不同，是上位机连续重复发送状态指令，而不是原本的接受一个指令就执行一个
+//指令接受的方式也提高了封装性，打算采用两种控制方式，一种和原本的一样，是普通小车的模式，另外一种是自由模式，和小车模式不同，接受的指令是方向+速度的矢量
 
 //init ports of M1
 const unsigned int IN_A1 = 4;
@@ -21,7 +24,6 @@ const unsigned int IN_D1 = 13;
 const unsigned int IN_D2 = 12;
 const unsigned int EN_D  = 9;
 
-
 /*
          ↑Front↑
       ┌----------┐
@@ -33,35 +35,28 @@ const unsigned int EN_D  = 9;
       └----------┘
 */
 
-
 L298NX4 motors( EN_A, IN_A1, IN_A2,
                 EN_B, IN_B1, IN_B2, 
                 EN_C, IN_C1, IN_C2, 
                 EN_D, IN_D1, IN_D2);
 
+//这边是调整默认速度的，由于小车两块驱动版的速度存在一定的偏差，所以需要校准
+const unsigned short default_speed_A = 80;
+const unsigned short default_speed_B = 100;
+const unsigned short default_speed_C = 100;
+const unsigned short default_speed_D = 80;
 
-
-//init two speed
-unsigned short LOW_SPEED = 55;
-unsigned short HIGH_SPEED = 255;
-
-
-void setup() {
-  
+void setup()
+{
   // initialize serial communication at 9600 bits per second:
   Serial.begin(9600);
-  
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB, on LEONARDO, MICRO, YUN, and other 32u4 based boards.
-
-  // Set initial speed for ALL motors
-  
+   ;// wait for serial port to connect. Needed for native USB, on LEONARDO, MICRO, YUN, and other 32u4 based boards
+   // Set initial speed for ALL motors
   }
-  motors.setSpeed(80);
+  //motors.setSpeed(80);
   Serial.println("initOK");
-  
 }
-
 
 void loop() 
 {
@@ -86,10 +81,7 @@ void loop()
 //debugTestAll();
 }
 
-
-//Print some informations in Serial Monitor
-
-//void printSomeInfo()
+//void printSomeInfo()//Print some informations in Serial Monitor
 //{
 //  Serial.print("Motor A is moving = ");
 //  Serial.print(motors.isMovingA() ? "YES" : "NO");
@@ -101,11 +93,15 @@ void loop()
 //  Serial.println(motors.getSpeedB());
 //}
 
+void setDefaultSpeed()   // 这边是调好的参数，因为四个轮子是有毛病的，所以需要修改这个偏移值
+{
+   motors.setSpeedA(default_speed_A);
+   motors.setSpeedB(default_speed_B);
+   motors.setSpeedC(default_speed_C);
+   motors.setSpeedD(default_speed_D);
+}
 
-
-
-
- void debugTestAll()        //test all motors
+void debugTestAll()//test all motors
  {
   motors.setSpeedA(80);
   motors.setSpeedB(100);
@@ -247,10 +243,6 @@ void loop()
 
 }
 
-
-
-
-//
 //char* stringToChar(String instr)
 //{
 //     char* str = NULL;
@@ -260,29 +252,27 @@ void loop()
 //     return str;
 //}
 
-                                                  
-String inStringToCommand(String str)               //用来判断输入的命令的合法性
+String inStringToCommand(String str)//用来判断输入的命令的合法性
 {
-    String cmd = "";
-    if (str[0] == '!'  && (str[str.length()-1] == '*'))
+   String cmd = "";
+   if (str[0] == '!'  && (str[str.length()-1] == '*'))
     {
-       cmd = str;
-       Serial.println("OK");
-       return cmd;
+      cmd = str;
+      Serial.println("OK");
+      return cmd;
     }
-    else if (str=="dbg")                         //隐藏指令 dbg
-   {
+   else if (str=="dbg")                                          //隐藏指令 dbg
+    {
       debugTestAll();
-   }
+    }
    else
     {
-       Serial.println("E0");
-       return cmd;
+      Serial.println("E0");
+      return cmd;
     }
 }
 
-
-int * getdot(String input)                      //获得一个命令里面的逗号所在位置，返回指针
+int * getdot(String input)//获得一个命令里面的逗号所在位置，返回指针
 {
    static int r[4];
    int a=0;
@@ -297,46 +287,40 @@ int * getdot(String input)                      //获得一个命令里面的逗
    return r;
 }
 
-String getnumstring(String fullcmd ,int whichnum)  //把给定的位置的字符串变成值
+String getnumstring(String fullcmd ,int whichnum)//把给定的位置的字符串变成值的字符串
 {
    int *dot=getdot(fullcmd);
    String anum="";
    for (int i=*(dot + whichnum-1);i<=(*(dot + whichnum));i++)
    {
       //if (fullcmd[i]>='0'&&fullcmd[i]<='9')
-      
             anum+=fullcmd[i];
-
-      
    }
    return anum;
 }
 
-int stringtonum(String anum)
+int stringtonum(String anum)//将字符串转换成int
 {
    return anum.toInt();
 }
 
-void preruncmd(String input)
+void preruncmd(String input)//初步执行指令，比如无参数指令等等
 {
    String cmd,num1,num2,num3,num4;
-   int *dot=NULL,i=0;              //这里是用来将指令和参数分开的，默认指令1个，参数最多4个,dot是逗号出现的位置
-      if (input[0]=='!')                  //如果是‘!’就分析指令，重置','的计数
+   int *dot=NULL,i=0;                                     //这里是用来将指令和参数分开的，默认指令1个，参数最多4个,dot是逗号出现的位置
+      if (input[0]=='!')                                    //如果是‘!’就分析指令，重置','的计数
       {
       
       switch (input[i+1])
       {
          case('F'):
          {
-            if (input[i+2]=='*')          //!F*
+            if (input[i+2]=='*')                             //!F*
             {
-               motors.setSpeedA(110);
-               motors.setSpeedB(80);
-               motors.setSpeedC(110);
-               motors.setSpeedD(80);
+               setDefaultSpeed();
                motors.forward();
             }
-            else if (input[i+2]==',')     //!F,@,@,@*
+            else if (input[i+2]==',')                       //!F,@,@,@*
             {
                runcmd("F",input);
                break;
@@ -348,15 +332,12 @@ void preruncmd(String input)
          }
          case('B'):
          {
-            if (input[i+2]=='*')          //!B*
+            if (input[i+2]=='*')                            //!B*
             {
-               motors.setSpeedA(130);
-               motors.setSpeedB(80);
-               motors.setSpeedC(130);
-               motors.setSpeedD(80);
+               setDefaultSpeed();
                motors.backward();
             }
-            else if (input[i+2]==',')     //!B,@,@,@*
+            else if (input[i+2]==',')                       //!B,@,@,@*
             {
                runcmd("B",input);
                break;
@@ -367,17 +348,17 @@ void preruncmd(String input)
          }
          case('K'):
          {
-            if(input=="!KILL*")          //!KILL*
+            if(input=="!KILL*")                             //!KILL*
             {
-               motors.stop();
+               motors.stop();                               //这边还没有实现中断delay,需要注意
             }
             else
             Serial.println("E4");
             break;
          }
-         case('T'):                             //!T
+         case('T'):                                         //!T
          {
-            if (input[i+2]=='L')
+            if (input[i+2]=='L')                            //TL//原地左转
             {
                if (input[i+3]=='*')
                {
@@ -390,7 +371,7 @@ void preruncmd(String input)
                   motors.stop();
                   break;
                }
-               else if (input[i+2]==',')
+               else if (input[i+2]==',')                    //!TL,@
                {
                   runcmd("T",input);
                   break;
@@ -399,7 +380,7 @@ void preruncmd(String input)
                Serial.println("E6");
                break;
             }
-            else if (input[i+2]=='R')
+            else if (input[i+2]=='R')                       //!TR//原地右转
             {
                if (input[i+3]=='*')
                {
@@ -412,7 +393,7 @@ void preruncmd(String input)
                   motors.stop();
                   break;
                }
-               else if (input[i+3]==',')
+               else if (input[i+3]==',')                    //!TR,@
                {
                   runcmd("T",input);
                   break;
@@ -425,11 +406,10 @@ void preruncmd(String input)
             Serial.println("E6");
             break;
          }
-         case('L'):
+         case('L'):                                         //!L
          {
-            if (input=="!L*")                   //!L*
-            {
-                                                //向左转弯，半径1米
+            if (input=="!L*")                               //!L*
+            {                                               //向左转弯，半径1米
                motors.stop();
                motors.setSpeedA(130);
                motors.setSpeedB(130);
@@ -440,7 +420,7 @@ void preruncmd(String input)
                motors.forwardC();
                motors.forwardD();
             }
-            else if (input[i+2]==',')
+            else if (input[i+2]==',')                       //!L,@
             {
                int m=1;
                switch(input[i+3])
@@ -480,9 +460,8 @@ void preruncmd(String input)
          }
          case('R'):
          {
-            if (input=="!R*")                   //!R*
-            {
-                                                //向右转弯，半径1米
+            if (input=="!R*")                         //!R*
+            {                                         //向右转弯，半径1米
                motors.stop();
                motors.setSpeedA(130);
                motors.setSpeedB(130);
@@ -493,7 +472,7 @@ void preruncmd(String input)
                motors.forwardC();
                motors.forwardD();
             }
-            else if (input[i+2]==',')
+            else if (input[i+2]==',')                 //!R*
             {
                int m=1;
                switch(input[i+3])
@@ -531,14 +510,11 @@ void preruncmd(String input)
                motors.forwardD();
             }
          }
-         case('S'):
+         case('S'):                                      //!S
          {
             if(input=="!S*")
             {
-               motors.setSpeedA(80);
-               motors.setSpeedB(80);
-               motors.setSpeedC(80);
-               motors.setSpeedD(80);
+               setDefaultSpeed();
             }
             else 
             Serial.println("E8");
@@ -553,13 +529,13 @@ void preruncmd(String input)
       }
 //      if (input[i]=='*')
 //      {
-//         break;                           //读取到'*'终止
+//         break;                                  //读取到'*'终止
 //      }
       else
       i++;  
 }
 
-void runcmd(String cmd,String fullcmd)    //执行命令的终极版，如果preruncmd()搞不定就交给它把
+void runcmd(String cmd,String fullcmd)//执行含参数的命令，如果preruncmd()搞不定就交给它
 {
    switch (cmd[0])
    {
